@@ -1,3 +1,20 @@
-Ibu kota Indonesia?|Jakarta|Bandung|Surabaya|Jakarta
-Warna logo Toko Hana?|Coral|Biru|Hijau|Coral
-Bahan dasar tempe?|Kedelai|Kacang|Beras|Kedelai
+Ibu kota Indonesia adalah?|Jakarta|Bandung|Surabaya|a
+Warna bendera Indonesia?|Merah Putih|Merah Kuning|Putih Biru|a
+2 + 3 x 4 = ?|14|20|10|a
+Hewan yang bisa terbang?|Kucing|Burung|Ikan|b
+Planet terdekat dari matahari?|Venus|Merkurius|Bumi|b
+Bahasa resmi Indonesia?|Inggris|Indonesia|Jawa|b
+5 x 5 - 5 = ?|20|25|30|a
+Bulan ke-12 dalam setahun?|November|Desember|Oktober|b
+Warna daun pada umumnya?|Merah|Hijau|Kuning|b
+1 tahun = ... bulan?|10|12|13|b
+Hewan berkaki 4 yang suka menggonggong?|Kucing|Anjing|Ayam|b
+Ibukota Jawa Barat?|Bandung|Bekasi|Bogor|a
+Huruf setelah huruf C?|D|E|F|a
+10 - 3 + 2 = ?|7|9|8|b
+Benda yang bisa buat kita lihat?|Kacamata|Payung|Sendok|a
+Hari setelah Senin?|Selasa|Rabu|Kamis|a
+Angka ganjil di bawah ini?|4|6|7|c
+Warna langit saat cerah?|Biru|Merah|Hijau|a
+Bentuk roda itu?|Kotak|Bulat|Segitiga|b
+Air laut rasanya?|Manis|Asin|Tawar|b
