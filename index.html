@@ -49,9 +49,20 @@ h1{color:var(--warna);text-align:center;margin-bottom:25px;font-size:26px}
 .scoreCircle::before{content:'';width:120px;height:120px;background:#fff;border-radius:50%;position:absolute}
 #skorText{position:relative;z-index:1;font-size:32px;font-weight:800;color:var(--warna)}
 
-.motivasiBox{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:25px;border-radius:15px;margin:25px 0;text-align:center}
-.motivasiBox h3{font-size:20px;margin-bottom:10px}
-.motivasiBox p{font-size:15px;line-height:1.6;opacity:0.95}
+.motivasiBox{
+  background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+  color:#fff;
+  padding:25px;
+  border-radius:15px;
+  margin:25px 0;
+  text-align:center;
+  position:relative;
+  z-index:10;
+  box-shadow:0 8px 25px rgba(102,126,234,0.4);
+  animation:fadeInUp 1s 0.5s both;
+}
+.motivasiBox h3{font-size:22px;margin-bottom:12px}
+.motivasiBox p{font-size:15px;line-height:1.7;opacity:0.95;min-height:50px}
 
 .hidden{display:none}
 
@@ -64,7 +75,6 @@ h1{color:var(--warna);text-align:center;margin-bottom:25px;font-size:26px}
 <div class="container">
   <h1>🎯 Kuis Toko Hana</h1>
 
-  <!-- INPUT NAMA -->
   <div id="inputBox" class="inputBox">
     <p>Masukkan nama kamu buat mulai kuis seru!</p>
     <input type="text" id="namaInput" placeholder="Nama lengkap kamu">
@@ -72,7 +82,6 @@ h1{color:var(--warna);text-align:center;margin-bottom:25px;font-size:26px}
     <p id="errorText" class="errorText"></p>
   </div>
 
-  <!-- KUIS -->
   <div id="kuisBox" class="kuisBox">
     <div class="timer" id="timerText">Sisa waktu: 30 detik</div>
     <div class="soal" id="soalText"></div>
@@ -84,7 +93,6 @@ h1{color:var(--warna);text-align:center;margin-bottom:25px;font-size:26px}
     <div class="progress" id="progressText">Soal 1/20</div>
   </div>
 
-  <!-- HASIL + MOTIVASI -->
   <div id="hasilBox" class="hasilBox">
     <h2>🎉 Kuis Selesai!</h2>
     <div class="scoreCircle" id="scoreCircle">
@@ -98,13 +106,11 @@ h1{color:var(--warna);text-align:center;margin-bottom:25px;font-size:26px}
 </div>
 
 <script>
-// SETTING
 const API_URL = '/api/save';
 const SOAL_URL = 'soal.txt?v=' + Date.now();
 const USERNAME = 'Hans23g';
 const REPO = 'kuis-toko-hana';
 
-// Load tema
 const warnaTema = localStorage.getItem('temaWarna') || '#e76f51';
 document.documentElement.style.setProperty('--warna', warnaTema);
 
@@ -115,7 +121,6 @@ let indexSoal = 0;
 let timerInterval = null;
 let waktuSisa = 30;
 
-// Element
 const inputBox = document.getElementById('inputBox');
 const kuisBox = document.getElementById('kuisBox');
 const hasilBox = document.getElementById('hasilBox');
@@ -130,11 +135,10 @@ const skorText = document.getElementById('skorText');
 const scoreCircle = document.getElementById('scoreCircle');
 const motivasiBox = document.getElementById('motivasiBox');
 
-// Kata motivasi berdasarkan skor
 const kataMotivasi = [
-  {min:0, max:40, judul:"Keren! Udah Berani Coba 💪", pesan:"Setiap ahli pernah jadi pemula. Skor ini cuma awal perjalanan kamu. Terus belajar, next kuis pasti lebih tinggi! Toko Hana bangga kamu udah ikut."},
-  {min:50, max:70, judul:"Luar Biasa! 🔥", pesan:"Wah otak kamu encer juga! Skor segini udah di atas rata-rata. Tinggal dikit lagi menuju sempurna. Kamu pasti bisa! Jangan lupa belanja di Toko Hana ya 😄"},
-  {min:80, max:100, judul:"JENIUS ABIS! 🏆", pesan:"Gila sih ini! Skor kamu top banget! Otak + usaha = hasil maksimal. Kamu contoh nyata kalau belajar itu nggak pernah bohongin hasil. Sukses terus ya, champion!"}
+  {min:0, max:40, judul:"Kerenn! Udah Mau Nyoba 💪", pesan:"Skor segini wajar banget! Yang penting kamu udah berani mulai. Tiap jagoan pasti dari 0 dulu. Besok ikut lagi, pasti naik! Toko Hana temenin kamu belajar 🔥"},
+  {min:50, max:70, judul:"MANTAP JIWA! 🔥🔥", pesan:"Skor kamu udah ngalahin banyak orang! Tinggal gas dikit lagi ke 100. Ini bukti kamu pinter + rajin. Pertahanin ya! Besok belanja di Toko Hana, hoki kamu nular ke dompet 😄"},
+  {min:80, max:100, judul:"LEGENDARY! KAMU JUARA! 🏆👑", pesan:"GOKIL! Skor segini bukan kebetulan. Ini hasil otak encer + usaha keras kamu. Kamu bukti nyata: belajar nggak pernah ngkhianatin hasil. Bangga banget! Toko Hana kasih jempol 10 🔥🔥"}
 ];
 
 async function cekNama(){
@@ -143,7 +147,6 @@ async function cekNama(){
     errorText.textContent = '⚠️ Nama minimal 3 karakter ya';
     return;
   }
-
   try{
     const res = await fetch(`https://raw.githubusercontent.com/${USERNAME}/${REPO}/main/data_peserta.json?t=${Date.now()}`);
     const data = await res.json();
@@ -152,7 +155,6 @@ async function cekNama(){
       return;
     }
   }catch(e){}
-
   errorText.textContent = '';
   mulaiKuis();
 }
@@ -160,11 +162,9 @@ async function cekNama(){
 async function mulaiKuis(){
   inputBox.classList.add('hidden');
   kuisBox.style.display = 'block';
-
   const res = await fetch(SOAL_URL);
   const txt = await res.text();
   const lines = txt.trim().split('\n');
-
   soalList = lines.map(line=>{
     const parts = line.split('|');
     return {
@@ -176,7 +176,6 @@ async function mulaiKuis(){
       waktu: parseInt(parts[5]) || 30
     };
   });
-
   jawabanUser = new Array(soalList.length).fill('');
   tampilSoal();
 }
@@ -186,23 +185,16 @@ function tampilSoal(){
     selesaiKuis();
     return;
   }
-
   const s = soalList[indexSoal];
   soalText.textContent = `${indexSoal+1}. ${s.soal}`;
   btnA.textContent = 'A. ' + s.a;
   btnB.textContent = 'B. ' + s.b;
   btnC.textContent = 'C. ' + s.c;
   progressText.textContent = `Soal ${indexSoal+1}/${soalList.length}`;
-
-  [btnA,btnB,btnC].forEach(b=>{
-    b.className = '';
-    b.disabled = false;
-  });
-
+  [btnA,btnB,btnC].forEach(b=>{b.className = '';b.disabled = false});
   clearInterval(timerInterval);
   waktuSisa = s.waktu;
   timerText.textContent = `Sisa waktu: ${waktuSisa} detik`;
-
   timerInterval = setInterval(()=>{
     waktuSisa--;
     timerText.textContent = `Sisa waktu: ${waktuSisa} detik`;
@@ -218,24 +210,17 @@ function tampilSoal(){
 function pilihJawaban(jwb){
   clearInterval(timerInterval);
   jawabanUser[indexSoal] = jwb;
-
   const benar = soalList[indexSoal].benar;
   const btnPilih = document.getElementById('btn' + jwb.toUpperCase());
   const btnBenar = document.getElementById('btn' + benar.toUpperCase());
-
-  // Disable semua tombol
   [btnA,btnB,btnC].forEach(b=>b.disabled = true);
-
-  // Animasi benar/salah
   if(jwb === benar){
     btnPilih.classList.add('benar');
-    // Konfeti kecil
     buatKonfeti();
   } else {
     btnPilih.classList.add('salah');
     btnBenar.classList.add('benar');
   }
-
   setTimeout(nextSoal, 1200);
 }
 
@@ -261,26 +246,29 @@ async function selesaiKuis(){
   clearInterval(timerInterval);
   kuisBox.style.display = 'none';
   hasilBox.classList.remove('hidden');
-
   let benar = 0;
   soalList.forEach((s,i)=>{
     if(jawabanUser[i] === s.benar) benar++;
   });
-
   const skor = benar * 10;
   const persen = (skor / 100) * 360;
-
   skorText.textContent = skor;
   scoreCircle.style.setProperty('--deg', persen + 'deg');
 
-  // Pilih kata motivasi
+  // Kata motivasi + animasi ngetik
   const motivasi = kataMotivasi.find(m => skor >= m.min && skor <= m.max) || kataMotivasi[0];
-  motivasiBox.innerHTML = `<h3>${motivasi.judul}</h3><p>${motivasi.pesan}</p>`;
+  motivasiBox.innerHTML = `<h3>${motivasi.judul}</h3><p id="teksMotivasi"></p>`;
+  let i = 0;
+  const teks = motivasi.pesan;
+  const el = document.getElementById('teksMotivasi');
+  const ketik = setInterval(()=>{
+    el.textContent += teks[i];
+    i++;
+    if(i >= teks.length) clearInterval(ketik);
+  }, 30);
 
-  // Konfeti gede kalau skor tinggi
   if(skor >= 80) buatKonfeti();
 
-  // Simpan
   try{
     await fetch(API_URL, {
       method: 'POST',
