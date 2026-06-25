@@ -5,39 +5,74 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Kuis Toko Hana</title>
 <style>
-:root{--warna:#e76f51}
+:root{--warna:#e76f51;--benar:#2a9d8f;--salah:#e63946}
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-body{background:linear-gradient(135deg,#f5f7fa 0%,#c3cfe2 100%);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
-.container{max-width:500px;width:100%;background:#fff;border-radius:20px;padding:30px;box-shadow:0 10px 40px rgba(0,0,0,0.1)}
-h1{color:var(--warna);text-align:center;margin-bottom:20px;font-size:24px}
+body{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
+
+.container{max-width:550px;width:100%;background:#fff;border-radius:25px;padding:35px;box-shadow:0 20px 60px rgba(0,0,0,0.3);animation:popIn 0.5s}
+@keyframes popIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+
+h1{color:var(--warna);text-align:center;margin-bottom:25px;font-size:26px}
+
+/* INPUT BOX */
 .inputBox{text-align:center}
-.inputBox input{width:100%;padding:15px;border:2px solid #ddd;border-radius:10px;font-size:16px;margin-bottom:15px}
-.inputBox button{width:100%;padding:15px;background:var(--warna);color:#fff;border:none;border-radius:10px;font-size:18px;font-weight:700;cursor:pointer}
-.inputBox button:hover{opacity:0.9}
+.inputBox p{color:#666;margin-bottom:15px;font-size:15px}
+.inputBox input{width:100%;padding:16px;border:2px solid #e0e0e0;border-radius:12px;font-size:16px;margin-bottom:15px;transition:0.3s}
+.inputBox input:focus{border-color:var(--warna);outline:none}
+.inputBox button{width:100%;padding:16px;background:var(--warna);color:#fff;border:none;border-radius:12px;font-size:18px;font-weight:700;cursor:pointer;transition:0.3s}
+.inputBox button:hover{transform:translateY(-3px);box-shadow:0 5px 15px rgba(231,111,81,0.4)}
+.errorText{color:var(--salah);margin-top:10px;font-size:14px;font-weight:600}
+
+/* KUIS BOX */
 .kuisBox{display:none}
-.timer{font-size:20px;font-weight:700;color:#e63946;text-align:center;margin-bottom:15px}
-.soal{font-size:18px;font-weight:600;margin-bottom:20px;line-height:1.5}
-.pilihan button{width:100%;padding:15px;margin-bottom:10px;border:2px solid #ddd;background:#fff;border-radius:10px;font-size:16px;cursor:pointer;text-align:left;transition:0.2s}
-.pilihan button:hover{border-color:var(--warna);background:#fff5f3}
-.pilihan button.terpilih{background:var(--warna);color:#fff;border-color:var(--warna)}
-.progress{margin-top:15px;font-size:14px;color:#666;text-align:center}
-.hasilBox{display:none;text-align:center}
-.hasilBox h2{color:var(--warna);margin-bottom:15px}
-#skorText{font-size:22px;font-weight:700;margin:20px 0}
+.timer{font-size:24px;font-weight:800;color:var(--salah);text-align:center;margin-bottom:20px;padding:12px;background:#fff0f0;border-radius:12px;animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+
+.soal{font-size:19px;font-weight:700;margin-bottom:25px;line-height:1.6;color:#333;min-height:60px}
+
+.pilihan button{width:100%;padding:16px;margin-bottom:12px;border:3px solid #e0e0e0;background:#fff;border-radius:12px;font-size:16px;cursor:pointer;text-align:left;font-weight:600;transition:all 0.3s;position:relative;overflow:hidden}
+.pilihan button:hover{border-color:var(--warna);background:#fff5f3;transform:translateX(5px)}
+.pilihan button.terpilih{border-color:var(--warna);background:var(--warna);color:#fff}
+.pilihan button.benar{border-color:var(--benar)!important;background:var(--benar)!important;color:#fff;animation:benarAnim 0.6s}
+.pilihan button.salah{border-color:var(--salah)!important;background:var(--salah)!important;color:#fff;animation:salahAnim 0.6s}
+@keyframes benarAnim{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+@keyframes salahAnim{0%,25%{transform:translateX(-10px)}50%{transform:translateX(10px)}75%{transform:translateX(-10px)}100%{transform:translateX(0)}}
+
+.progress{margin-top:20px;font-size:15px;color:#666;text-align:center;font-weight:600}
+
+/* HASIL BOX + MOTIVASI */
+.hasilBox{display:none;text-align:center;animation:fadeInUp 0.8s}
+@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.hasilBox h2{color:var(--warna);margin-bottom:20px;font-size:28px}
+
+.scoreCircle{width:150px;height:150px;border-radius:50%;background:conic-gradient(var(--warna) 0deg, var(--warna) var(--deg), #f0f0f0 var(--deg));display:flex;align-items:center;justify-content:center;margin:25px auto;position:relative}
+.scoreCircle::before{content:'';width:120px;height:120px;background:#fff;border-radius:50%;position:absolute}
+#skorText{position:relative;z-index:1;font-size:32px;font-weight:800;color:var(--warna)}
+
+.motivasiBox{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:#fff;padding:25px;border-radius:15px;margin:25px 0;text-align:center}
+.motivasiBox h3{font-size:20px;margin-bottom:10px}
+.motivasiBox p{font-size:15px;line-height:1.6;opacity:0.95}
+
 .hidden{display:none}
+
+/* EFEK KONFETI */
+.confetti{position:fixed;width:10px;height:10px;background:var(--warna);position:absolute;animation:confettiFall 3s linear infinite;z-index:9999}
+@keyframes confettiFall{to{transform:translateY(100vh) rotate(360deg);opacity:0}}
 </style>
 </head>
 <body>
 <div class="container">
   <h1>🎯 Kuis Toko Hana</h1>
-  
+
+  <!-- INPUT NAMA -->
   <div id="inputBox" class="inputBox">
-    <p style="margin-bottom:15px">Masukkan nama kamu untuk mulai</p>
-    <input type="text" id="namaInput" placeholder="Nama lengkap">
-    <button onclick="cekNama()">Mulai Kuis 30 Detik</button>
-    <p id="errorText" style="color:red;margin-top:10px"></p>
+    <p>Masukkan nama kamu buat mulai kuis seru!</p>
+    <input type="text" id="namaInput" placeholder="Nama lengkap kamu">
+    <button onclick="cekNama()">🚀 Mulai Kuis!</button>
+    <p id="errorText" class="errorText"></p>
   </div>
 
+  <!-- KUIS -->
   <div id="kuisBox" class="kuisBox">
     <div class="timer" id="timerText">Sisa waktu: 30 detik</div>
     <div class="soal" id="soalText"></div>
@@ -49,10 +84,16 @@ h1{color:var(--warna);text-align:center;margin-bottom:20px;font-size:24px}
     <div class="progress" id="progressText">Soal 1/20</div>
   </div>
 
+  <!-- HASIL + MOTIVASI -->
   <div id="hasilBox" class="hasilBox">
     <h2>🎉 Kuis Selesai!</h2>
-    <p id="skorText"></p>
-    <p style="color:#666">Data kamu sudah tersimpan. Terima kasih!</p>
+    <div class="scoreCircle" id="scoreCircle">
+      <div id="skorText"></div>
+    </div>
+
+    <div class="motivasiBox" id="motivasiBox"></div>
+
+    <p style="color:#666;font-size:14px">Data kamu sudah tersimpan. Makasih udah ikut kuis Toko Hana! ❤️</p>
   </div>
 </div>
 
@@ -63,7 +104,7 @@ const SOAL_URL = 'soal.txt?v=' + Date.now();
 const USERNAME = 'Hans23g';
 const REPO = 'kuis-toko-hana';
 
-// Load tema dari localStorage
+// Load tema
 const warnaTema = localStorage.getItem('temaWarna') || '#e76f51';
 document.documentElement.style.setProperty('--warna', warnaTema);
 
@@ -74,6 +115,7 @@ let indexSoal = 0;
 let timerInterval = null;
 let waktuSisa = 30;
 
+// Element
 const inputBox = document.getElementById('inputBox');
 const kuisBox = document.getElementById('kuisBox');
 const hasilBox = document.getElementById('hasilBox');
@@ -85,24 +127,32 @@ const btnB = document.getElementById('btnB');
 const btnC = document.getElementById('btnC');
 const progressText = document.getElementById('progressText');
 const skorText = document.getElementById('skorText');
+const scoreCircle = document.getElementById('scoreCircle');
+const motivasiBox = document.getElementById('motivasiBox');
+
+// Kata motivasi berdasarkan skor
+const kataMotivasi = [
+  {min:0, max:40, judul:"Keren! Udah Berani Coba 💪", pesan:"Setiap ahli pernah jadi pemula. Skor ini cuma awal perjalanan kamu. Terus belajar, next kuis pasti lebih tinggi! Toko Hana bangga kamu udah ikut."},
+  {min:50, max:70, judul:"Luar Biasa! 🔥", pesan:"Wah otak kamu encer juga! Skor segini udah di atas rata-rata. Tinggal dikit lagi menuju sempurna. Kamu pasti bisa! Jangan lupa belanja di Toko Hana ya 😄"},
+  {min:80, max:100, judul:"JENIUS ABIS! 🏆", pesan:"Gila sih ini! Skor kamu top banget! Otak + usaha = hasil maksimal. Kamu contoh nyata kalau belajar itu nggak pernah bohongin hasil. Sukses terus ya, champion!"}
+];
 
 async function cekNama(){
   namaPeserta = document.getElementById('namaInput').value.trim();
   if(namaPeserta.length < 3){
-    errorText.textContent = 'Nama minimal 3 karakter';
+    errorText.textContent = '⚠️ Nama minimal 3 karakter ya';
     return;
   }
-  
-  // Cek duplikat
+
   try{
     const res = await fetch(`https://raw.githubusercontent.com/${USERNAME}/${REPO}/main/data_peserta.json?t=${Date.now()}`);
     const data = await res.json();
     if(data.some(p => p.nama.toLowerCase() === namaPeserta.toLowerCase())){
-      errorText.textContent = 'Nama ini sudah ikut kuis!';
+      errorText.textContent = '⚠️ Nama ini udah ikut kuis. Pakai nama lain ya!';
       return;
     }
   }catch(e){}
-  
+
   errorText.textContent = '';
   mulaiKuis();
 }
@@ -110,12 +160,11 @@ async function cekNama(){
 async function mulaiKuis(){
   inputBox.classList.add('hidden');
   kuisBox.style.display = 'block';
-  
-  // Load soal
+
   const res = await fetch(SOAL_URL);
   const txt = await res.text();
   const lines = txt.trim().split('\n');
-  
+
   soalList = lines.map(line=>{
     const parts = line.split('|');
     return {
@@ -124,10 +173,10 @@ async function mulaiKuis(){
       b: parts[2],
       c: parts[3],
       benar: parts[4].trim().toLowerCase(),
-      waktu: parseInt(parts[5]) || 30 // default 30 detik
+      waktu: parseInt(parts[5]) || 30
     };
   });
-  
+
   jawabanUser = new Array(soalList.length).fill('');
   tampilSoal();
 }
@@ -137,61 +186,100 @@ function tampilSoal(){
     selesaiKuis();
     return;
   }
-  
+
   const s = soalList[indexSoal];
   soalText.textContent = `${indexSoal+1}. ${s.soal}`;
   btnA.textContent = 'A. ' + s.a;
   btnB.textContent = 'B. ' + s.b;
   btnC.textContent = 'C. ' + s.c;
   progressText.textContent = `Soal ${indexSoal+1}/${soalList.length}`;
-  
-  // Reset pilihan
-  [btnA,btnB,btnC].forEach(b=>b.classList.remove('terpilih'));
-  if(jawabanUser[indexSoal]){
-    document.getElementById('btn'+jawabanUser[indexSoal].toUpperCase()).classList.add('terpilih');
-  }
-  
-  // Timer per soal
+
+  [btnA,btnB,btnC].forEach(b=>{
+    b.className = '';
+    b.disabled = false;
+  });
+
   clearInterval(timerInterval);
   waktuSisa = s.waktu;
   timerText.textContent = `Sisa waktu: ${waktuSisa} detik`;
-  
+
   timerInterval = setInterval(()=>{
     waktuSisa--;
     timerText.textContent = `Sisa waktu: ${waktuSisa} detik`;
+    if(waktuSisa <= 10) timerText.style.background = '#ffe0e0';
     if(waktuSisa <= 0){
       clearInterval(timerInterval);
+      jawabanUser[indexSoal] = '';
       nextSoal();
     }
   }, 1000);
 }
 
 function pilihJawaban(jwb){
+  clearInterval(timerInterval);
   jawabanUser[indexSoal] = jwb;
-  [btnA,btnB,btnC].forEach(b=>b.classList.remove('terpilih'));
-  document.getElementById('btn'+jwb.toUpperCase()).classList.add('terpilih');
-  setTimeout(nextSoal, 300);
+
+  const benar = soalList[indexSoal].benar;
+  const btnPilih = document.getElementById('btn' + jwb.toUpperCase());
+  const btnBenar = document.getElementById('btn' + benar.toUpperCase());
+
+  // Disable semua tombol
+  [btnA,btnB,btnC].forEach(b=>b.disabled = true);
+
+  // Animasi benar/salah
+  if(jwb === benar){
+    btnPilih.classList.add('benar');
+    // Konfeti kecil
+    buatKonfeti();
+  } else {
+    btnPilih.classList.add('salah');
+    btnBenar.classList.add('benar');
+  }
+
+  setTimeout(nextSoal, 1200);
 }
 
 function nextSoal(){
-  clearInterval(timerInterval);
   indexSoal++;
   tampilSoal();
+}
+
+function buatKonfeti(){
+  for(let i=0; i<20; i++){
+    const confetti = document.createElement('div');
+    confetti.className = 'confetti';
+    confetti.style.left = Math.random() * 100 + '%';
+    confetti.style.top = '-10px';
+    confetti.style.backgroundColor = `hsl(${Math.random()*360},100%,50%)`;
+    confetti.style.animationDelay = Math.random() * 0.5 + 's';
+    document.body.appendChild(confetti);
+    setTimeout(()=>confetti.remove(), 3000);
+  }
 }
 
 async function selesaiKuis(){
   clearInterval(timerInterval);
   kuisBox.style.display = 'none';
   hasilBox.classList.remove('hidden');
-  
+
   let benar = 0;
   soalList.forEach((s,i)=>{
     if(jawabanUser[i] === s.benar) benar++;
   });
-  
+
   const skor = benar * 10;
-  skorText.textContent = `Benar: ${benar}/${soalList.length} | Skor: ${skor}`;
-  
+  const persen = (skor / 100) * 360;
+
+  skorText.textContent = skor;
+  scoreCircle.style.setProperty('--deg', persen + 'deg');
+
+  // Pilih kata motivasi
+  const motivasi = kataMotivasi.find(m => skor >= m.min && skor <= m.max) || kataMotivasi[0];
+  motivasiBox.innerHTML = `<h3>${motivasi.judul}</h3><p>${motivasi.pesan}</p>`;
+
+  // Konfeti gede kalau skor tinggi
+  if(skor >= 80) buatKonfeti();
+
   // Simpan
   try{
     await fetch(API_URL, {
@@ -202,7 +290,6 @@ async function selesaiKuis(){
   }catch(e){}
 }
 
-// Enter untuk mulai
 document.getElementById('namaInput').addEventListener('keypress', e=>{
   if(e.key === 'Enter') cekNama();
 });
