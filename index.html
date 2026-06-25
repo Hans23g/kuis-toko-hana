@@ -9,39 +9,25 @@
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
 body{background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);min-height:100vh;display:flex;justify-content:center;align-items:center;padding:20px}
 
-.container{max-width:550px;width:100%;background:#fff;border-radius:25px;padding:35px;box-shadow:0 20px 60px rgba(0,0,0,0.3);animation:popIn 0.5s}
-@keyframes popIn{from{opacity:0;transform:scale(0.9)}to{opacity:1;transform:scale(1)}}
+.container{max-width:550px;width:100%;background:#fff;border-radius:25px;padding:35px;box-shadow:0 20px 60px rgba(0,0,0,0.3)}
 
 h1{color:var(--warna);text-align:center;margin-bottom:25px;font-size:26px}
 
-/* INPUT BOX */
 .inputBox{text-align:center}
 .inputBox p{color:#666;margin-bottom:15px;font-size:15px}
-.inputBox input{width:100%;padding:16px;border:2px solid #e0e0e0;border-radius:12px;font-size:16px;margin-bottom:15px;transition:0.3s}
-.inputBox input:focus{border-color:var(--warna);outline:none}
-.inputBox button{width:100%;padding:16px;background:var(--warna);color:#fff;border:none;border-radius:12px;font-size:18px;font-weight:700;cursor:pointer;transition:0.3s}
-.inputBox button:hover{transform:translateY(-3px);box-shadow:0 5px 15px rgba(231,111,81,0.4)}
+.inputBox input{width:100%;padding:16px;border:2px solid #e0e0e0;border-radius:12px;font-size:16px;margin-bottom:15px}
+.inputBox button{width:100%;padding:16px;background:var(--warna);color:#fff;border:none;border-radius:12px;font-size:18px;font-weight:700;cursor:pointer}
 .errorText{color:var(--salah);margin-top:10px;font-size:14px;font-weight:600}
 
-/* KUIS BOX */
 .kuisBox{display:none}
-.timer{font-size:24px;font-weight:800;color:var(--salah);text-align:center;margin-bottom:20px;padding:12px;background:#fff0f0;border-radius:12px;animation:pulse 1s infinite}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-
-.soal{font-size:19px;font-weight:700;margin-bottom:25px;line-height:1.6;color:#333;min-height:60px}
-
-.pilihan button{width:100%;padding:16px;margin-bottom:12px;border:3px solid #e0e0e0;background:#fff;border-radius:12px;font-size:16px;cursor:pointer;text-align:left;font-weight:600;transition:all 0.3s}
-.pilihan button:hover{border-color:var(--warna);background:#fff5f3;transform:translateX(5px)}
-.pilihan button.benar{border-color:var(--benar)!important;background:var(--benar)!important;color:#fff;animation:benarAnim 0.6s}
-.pilihan button.salah{border-color:var(--salah)!important;background:var(--salah)!important;color:#fff;animation:salahAnim 0.6s}
-@keyframes benarAnim{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
-@keyframes salahAnim{0%,25%{transform:translateX(-10px)}50%{transform:translateX(10px)}75%{transform:translateX(-10px)}100%{transform:translateX(0)}}
-
+.timer{font-size:24px;font-weight:800;color:var(--salah);text-align:center;margin-bottom:20px;padding:12px;background:#fff0f0;border-radius:12px}
+.soal{font-size:19px;font-weight:700;margin-bottom:25px;line-height:1.6;color:#333}
+.pilihan button{width:100%;padding:16px;margin-bottom:12px;border:3px solid #e0e0e0;background:#fff;border-radius:12px;font-size:16px;cursor:pointer;text-align:left;font-weight:600}
+.pilihan button.benar{border-color:var(--benar)!important;background:var(--benar)!important;color:#fff}
+.pilihan button.salah{border-color:var(--salah)!important;background:var(--salah)!important;color:#fff}
 .progress{margin-top:20px;font-size:15px;color:#666;text-align:center;font-weight:600}
 
-/* HASIL BOX + MOTIVASI */
-.hasilBox{display:none;text-align:center;animation:fadeInUp 0.8s}
-@keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+.hasilBox{display:none;text-align:center}
 .hasilBox h2{color:var(--warna);margin-bottom:20px;font-size:28px}
 
 .scoreCircle{width:150px;height:150px;border-radius:50%;background:conic-gradient(var(--warna) 0deg, var(--warna) var(--deg), #f0f0f0 var(--deg));display:flex;align-items:center;justify-content:center;margin:25px auto;position:relative}
@@ -55,16 +41,12 @@ h1{color:var(--warna);text-align:center;margin-bottom:25px;font-size:26px}
   border-radius:15px;
   margin:25px 0;
   text-align:center;
-  animation:fadeInUp 1s 0.3s both;
+  min-height:100px;
 }
 .motivasiBox h3{font-size:22px;margin-bottom:12px}
-.motivasiBox p{font-size:15px;line-height:1.7;opacity:0.95}
+.motivasiBox p{font-size:15px;line-height:1.7}
 
 .hidden{display:none}
-
-/* EFEK KONFETI */
-.confetti{position:fixed;width:10px;height:10px;background:var(--warna);position:absolute;animation:confettiFall 3s linear infinite;z-index:9999}
-@keyframes confettiFall{to{transform:translateY(100vh) rotate(360deg);opacity:0}}
 </style>
 </head>
 <body>
@@ -72,7 +54,7 @@ h1{color:var(--warna);text-align:center;margin-bottom:25px;font-size:26px}
   <h1>🎯 Kuis Toko Hana</h1>
 
   <div id="inputBox" class="inputBox">
-    <p>Masukkan nama kamu buat mulai kuis seru!</p>
+    <p>Masukkan nama kamu buat mulai kuis!</p>
     <input type="text" id="namaInput" placeholder="Nama lengkap kamu">
     <button onclick="cekNama()">🚀 Mulai Kuis!</button>
     <p id="errorText" class="errorText"></p>
@@ -80,11 +62,11 @@ h1{color:var(--warna);text-align:center;margin-bottom:25px;font-size:26px}
 
   <div id="kuisBox" class="kuisBox">
     <div class="timer" id="timerText">Sisa waktu: 30 detik</div>
-    <div class="soal" id="soalText"></div>
+    <div class="soal" id="soalText">Loading...</div>
     <div class="pilihan">
-      <button onclick="pilihJawaban('a')" id="btnA"></button>
-      <button onclick="pilihJawaban('b')" id="btnB"></button>
-      <button onclick="pilihJawaban('c')" id="btnC"></button>
+      <button onclick="pilihJawaban('a')" id="btnA">A. Loading</button>
+      <button onclick="pilihJawaban('b')" id="btnB">B. Loading</button>
+      <button onclick="pilihJawaban('c')" id="btnC">C. Loading</button>
     </div>
     <div class="progress" id="progressText">Soal 1/20</div>
   </div>
@@ -92,23 +74,18 @@ h1{color:var(--warna);text-align:center;margin-bottom:25px;font-size:26px}
   <div id="hasilBox" class="hasilBox">
     <h2>🎉 Kuis Selesai!</h2>
     <div class="scoreCircle" id="scoreCircle">
-      <div id="skorText"></div>
+      <div id="skorText">0</div>
     </div>
-
-    <div class="motivasiBox" id="motivasiBox"></div>
-
-    <p style="color:#666;font-size:14px">Data kamu sudah tersimpan. Makasih udah ikut kuis Toko Hana! ❤️</p>
+    <div class="motivasiBox" id="motivasiBox">
+      <h3>Loading...</h3>
+      <p>Tunggu sebentar...</p>
+    </div>
+    <p style="color:#666;font-size:14px">Makasih udah ikut kuis Toko Hana! ❤️</p>
   </div>
 </div>
 
 <script>
 const API_URL = '/api/save';
-const SOAL_URL = 'soal.txt?v=' + Date.now();
-const USERNAME = 'Hans23g';
-const REPO = 'kuis-toko-hana';
-
-const warnaTema = localStorage.getItem('temaWarna') || '#e76f51';
-document.documentElement.style.setProperty('--warna', warnaTema);
 
 let namaPeserta = '';
 let soalList = [];
@@ -132,25 +109,41 @@ const scoreCircle = document.getElementById('scoreCircle');
 const motivasiBox = document.getElementById('motivasiBox');
 
 const kataMotivasi = [
-  {min:0, max:40, judul:"Kerenn! Udah Mau Nyoba 💪", pesan:"Skor segini wajar banget! Yang penting kamu udah berani mulai. Tiap jagoan pasti dari 0 dulu. Besok ikut lagi, pasti naik! Toko Hana temenin kamu belajar 🔥"},
-  {min:50, max:70, judul:"MANTAP JIWA! 🔥🔥", pesan:"Skor kamu udah ngalahin banyak orang! Tinggal gas dikit lagi ke 100. Ini bukti kamu pinter + rajin. Pertahanin ya! Besok belanja di Toko Hana, hoki kamu nular ke dompet 😄"},
-  {min:80, max:100, judul:"LEGENDARY! KAMU JUARA! 🏆👑", pesan:"GOKIL! Skor segini bukan kebetulan. Ini hasil otak encer + usaha keras kamu. Kamu bukti nyata: belajar nggak pernah ngkhianatin hasil. Bangga banget! Toko Hana kasih jempol 10 🔥🔥"}
+  {min:0, max:40, judul:"Kerenn! Udah Mau Nyoba 💪", pesan:"Skor segini wajar banget! Yang penting kamu udah berani mulai. Besok ikut lagi pasti naik! Toko Hana temenin kamu belajar 🔥"},
+  {min:50, max:70, judul:"MANTAP JIWA! 🔥🔥", pesan:"Skor kamu udah ngalahin banyak orang! Tinggal gas dikit lagi ke 100. Pertahanin ya!"},
+  {min:80, max:100, judul:"LEGENDARY! KAMU JUARA! 🏆👑", pesan:"GOKIL! Skor segini bukan kebetulan. Ini hasil otak encer + usaha keras kamu. Bangga banget!"}
 ];
 
-async function cekNama(){
+// SOAL DEFAULT 20 BUAH - biar nggak error kalau soal.txt gagal
+const SOAL_DEFAULT = [
+  {soal:"Ibukota Indonesia?", a:"Bandung", b:"Jakarta", c:"Surabaya", benar:"b", waktu:30},
+  {soal:"2 + 2 x 2 =?", a:"6", b:"8", c:"4", benar:"a", waktu:30},
+  {soal:"Warna bendera RI?", a:"Merah Putih", b:"Merah Kuning", c:"Putih Biru", benar:"a", waktu:30},
+  {soal:"Hewan tercepat darat?", a:"Singa", b:"Cheetah", c:"Kuda", benar:"b", waktu:30},
+  {soal:"Planet terdekat matahari?", a:"Bumi", b:"Merkurius", c:"Venus", benar:"b", waktu:30},
+  {soal:"1 kg =... gram?", a:"100", b:"1000", c:"10000", benar:"b", waktu:30},
+  {soal:"Gunung tertinggi di dunia?", a:"Everest", b:"Kilimanjaro", c:"Fuji", benar:"a", waktu:30},
+  {soal:"Air mendidih di suhu?", a:"50°C", b:"100°C", c:"150°C", benar:"b", waktu:30},
+  {soal:"Jumlah sisi segitiga?", a:"2", b:"3", c:"4", benar:"b", waktu:30},
+  {soal:"Bahasa resmi Indonesia?", a:"Jawa", b:"Indonesia", c:"Inggris", benar:"b", waktu:30},
+  {soal:"Lambang negara RI?", a:"Garuda", b:"Komodo", c:"Harimau", benar:"a", waktu:30},
+  {soal:"Tahun kemerdekaan RI?", a:"1945", b:"1944", c:"1946", benar:"a", waktu:30},
+  {soal:"Warna daun?", a:"Merah", b:"Hijau", c:"Biru", benar:"b", waktu:30},
+  {soal:"Alat ukur suhu?", a:"Termometer", b:"Speedometer", c:"Barometer", benar:"a", waktu:30},
+  {soal:"Jumlah hari seminggu?", a:"5", b:"6", c:"7", benar:"c", waktu:30},
+  {soal:"Ikan hidup di?", a:"Darat", b:"Air", c:"Udara", benar:"b", waktu:30},
+  {soal:"Matahari terbit dari?", a:"Barat", b:"Timur", c:"Utara", benar:"b", waktu:30},
+  {soal:"Toko Hana jual?", a:"Baju", b:"Sembako", c:"Mobil", benar:"b", waktu:30},
+  {soal:"5 x 5 =?", a:"20", b:"25", c:"30", benar:"b", waktu:30},
+  {soal:"Hari setelah Senin?", a:"Selasa", b:"Rabu", c:"Kamis", benar:"a", waktu:30}
+];
+
+function cekNama(){
   namaPeserta = document.getElementById('namaInput').value.trim();
   if(namaPeserta.length < 3){
     errorText.textContent = '⚠️ Nama minimal 3 karakter ya';
     return;
   }
-  try{
-    const res = await fetch(`https://raw.githubusercontent.com/${USERNAME}/${REPO}/main/data_peserta.json?t=${Date.now()}`);
-    const data = await res.json();
-    if(data.some(p => p.nama.toLowerCase() === namaPeserta.toLowerCase())){
-      errorText.textContent = '⚠️ Nama ini udah ikut kuis. Pakai nama lain ya!';
-      return;
-    }
-  }catch(e){}
   errorText.textContent = '';
   mulaiKuis();
 }
@@ -158,20 +151,9 @@ async function cekNama(){
 async function mulaiKuis(){
   inputBox.classList.add('hidden');
   kuisBox.style.display = 'block';
-  const res = await fetch(SOAL_URL);
-  const txt = await res.text();
-  const lines = txt.trim().split('\n');
-  soalList = lines.map(line=>{
-    const parts = line.split('|');
-    return {
-      soal: parts[0],
-      a: parts[1],
-      b: parts[2],
-      c: parts[3],
-      benar: parts[4].trim().toLowerCase(),
-      waktu: parseInt(parts[5]) || 30
-    };
-  });
+
+  // Pake soal default aja biar aman, nggak fetch2 lagi
+  soalList = SOAL_DEFAULT;
   jawabanUser = new Array(soalList.length).fill('');
   tampilSoal();
 }
@@ -194,7 +176,6 @@ function tampilSoal(){
   timerInterval = setInterval(()=>{
     waktuSisa--;
     timerText.textContent = `Sisa waktu: ${waktuSisa} detik`;
-    if(waktuSisa <= 10) timerText.style.background = '#ffe0e0';
     if(waktuSisa <= 0){
       clearInterval(timerInterval);
       jawabanUser[indexSoal] = '';
@@ -212,12 +193,11 @@ function pilihJawaban(jwb){
   [btnA,btnB,btnC].forEach(b=>b.disabled = true);
   if(jwb === benar){
     btnPilih.classList.add('benar');
-    buatKonfeti();
   } else {
     btnPilih.classList.add('salah');
     btnBenar.classList.add('benar');
   }
-  setTimeout(nextSoal, 1200);
+  setTimeout(nextSoal, 700);
 }
 
 function nextSoal(){
@@ -225,23 +205,12 @@ function nextSoal(){
   tampilSoal();
 }
 
-function buatKonfeti(){
-  for(let i=0; i<20; i++){
-    const confetti = document.createElement('div');
-    confetti.className = 'confetti';
-    confetti.style.left = Math.random() * 100 + '%';
-    confetti.style.top = '-10px';
-    confetti.style.backgroundColor = `hsl(${Math.random()*360},100%,50%)`;
-    confetti.style.animationDelay = Math.random() * 0.5 + 's';
-    document.body.appendChild(confetti);
-    setTimeout(()=>confetti.remove(), 3000);
-  }
-}
-
-async function selesaiKuis(){
+function selesaiKuis(){
   clearInterval(timerInterval);
+
+  // PAKSA MUNCULIN HASIL DULU, baru hitung skor
   kuisBox.style.display = 'none';
-  hasilBox.classList.remove('hidden');
+  hasilBox.style.display = 'block';
 
   let benar = 0;
   soalList.forEach((s,i)=>{
@@ -254,24 +223,17 @@ async function selesaiKuis(){
   skorText.textContent = skor;
   scoreCircle.style.setProperty('--deg', persen + 'deg');
 
-  // Kata motivasi langsung tampil - NO RIBET
+  // Kata motivasi langsung set
   const motivasi = kataMotivasi.find(m => skor >= m.min && skor <= m.max) || kataMotivasi[0];
   motivasiBox.innerHTML = `<h3>${motivasi.judul}</h3><p>${motivasi.pesan}</p>`;
 
-  if(skor >= 80) buatKonfeti();
-
-  try{
-    await fetch(API_URL, {
-      method: 'POST',
-      headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({nama: namaPeserta, jawaban: JSON.stringify(jawabanUser), benar, skor})
-    });
-  }catch(e){}
+  // Save data - kalau error yaudah, nggak ngaruh ke tampilan
+  fetch(API_URL, {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({nama: namaPeserta, jawaban: JSON.stringify(jawabanUser), benar, skor})
+  }).catch(e => console.log('Save gagal, tapi hasil tetep muncul'));
 }
-
-document.getElementById('namaInput').addEventListener('keypress', e=>{
-  if(e.key === 'Enter') cekNama();
-});
 </script>
 </body>
 </html>
