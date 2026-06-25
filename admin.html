@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Kuis Toko Hana</title>
+<title>Admin Kuis Toko Hana Pro</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
 body{background:#f5f5f5;padding:20px}
@@ -12,17 +12,17 @@ h1{color:#e76f51;margin-bottom:20px}
 .loginBox{text-align:center;padding:50px 0}
 .loginBox input{padding:12px;width:300px;border:2px solid #ddd;border-radius:8px;font-size:16px;margin-right:10px}
 .loginBox button{padding:12px 25px;background:#e76f51;color:#fff;border:none;border-radius:8px;font-weight:700;cursor:pointer}
-.tabs{display:flex;gap:10px;margin-bottom:20px;border-bottom:2px solid #eee}
+.tabs{display:flex;gap:10px;margin-bottom:20px;border-bottom:2px solid #eee;flex-wrap:wrap}
 .tab{padding:12px 20px;cursor:pointer;border-bottom:3px solid transparent;font-weight:600}
 .tab.active{color:#e76f51;border-bottom-color:#e76f51}
 .tabContent{display:none}
 .tabContent.active{display:block}
-table{width:100%;border-collapse:collapse;margin-top:15px}
-th,td{padding:12px;text-align:left;border-bottom:1px solid #ddd}
+table{width:100%;border-collapse:collapse;margin-top:15px;font-size:14px}
+th,td{padding:10px;text-align:left;border-bottom:1px solid #ddd}
 th{background:#e76f51;color:#fff}
 tr:hover{background:#f8f9fa}
-textarea{width:100%;height:300px;padding:12px;border:2px solid #ddd;border-radius:8px;font-family:monospace;font-size:14px;margin:10px 0}
-.btn{padding:10px 20px;background:#2a9d8f;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;margin-right:10px}
+textarea{width:100%;height:350px;padding:12px;border:2px solid #ddd;border-radius:8px;font-family:monospace;font-size:13px;margin:10px 0}
+.btn{padding:10px 20px;background:#2a9d8f;color:#fff;border:none;border-radius:8px;cursor:pointer;font-weight:600;margin:5px}
 .btn-danger{background:#e63946}
 .btn:hover{opacity:0.9}
 .alert{padding:12px;border-radius:8px;margin:10px 0}
@@ -30,71 +30,73 @@ textarea{width:100%;height:300px;padding:12px;border:2px solid #ddd;border-radiu
 .alert-error{background:#f8d7da;color:#721c24}
 .hidden{display:none}
 .info{font-size:13px;color:#666;margin-top:5px}
+input[type="color"]{width:100%;height:50px;border:2px solid #ddd;border-radius:8px;cursor:pointer}
 </style>
 </head>
 <body>
 <div class="container">
   <div id="loginBox" class="loginBox">
-    <h1>🔐 Login Admin Kuis</h1>
+    <h1>🔐 Login Admin Pro</h1>
     <input type="password" id="passInput" placeholder="Masukkan password">
     <button onclick="login()">Masuk</button>
     <p class="info">Default: adminhana123</p>
   </div>
 
   <div id="adminBox" class="hidden">
-    <h1>📊 Dashboard Admin Kuis Toko Hana</h1>
+    <h1>📊 Dashboard Admin Pro - Toko Hana</h1>
 
     <div class="tabs">
-      <div class="tab active" onclick="switchTab('data')">Data Peserta</div>
-      <div class="tab" onclick="switchTab('soal')">Edit Soal</div>
-      <div class="tab" onclick="switchTab('setting')">Setting</div>
+      <div class="tab active" onclick="switchTab('data',event)">Data Peserta</div>
+      <div class="tab" onclick="switchTab('soal',event)">Edit Soal + Timer</div>
+      <div class="tab" onclick="switchTab('tema',event)">Ganti Tema</div>
+      <div class="tab" onclick="switchTab('setting',event)">Setting</div>
     </div>
 
-    <!-- TAB DATA PESERTA -->
     <div id="tab-data" class="tabContent active">
-      <button class="btn" onclick="loadData()">🔄 Refresh Data</button>
+      <button class="btn" onclick="loadData()">🔄 Refresh</button>
       <button class="btn btn-danger" onclick="exportCSV()">📥 Export CSV</button>
       <div id="alertBox"></div>
       <table>
-        <thead>
-          <tr><th>No</th><th>Nama</th><th>Benar</th><th>Skor</th><th>Jam</th></tr>
-        </thead>
+        <thead><tr><th>No</th><th>Nama</th><th>Benar</th><th>Skor</th><th>Jam</th></tr></thead>
         <tbody id="dataTable"></tbody>
       </table>
     </div>
 
-    <!-- TAB EDIT SOAL -->
     <div id="tab-soal" class="tabContent">
-      <h3>Edit Soal via GitHub</h3>
-      <p class="info">Format: Pertanyaan|PilihanA|PilihanB|PilihanC|kunci a/b/c<br>1 baris = 1 soal</p>
-      <textarea id="soalTextarea" placeholder="Ibu kota Indonesia?|Jakarta|Bandung|Surabaya|a"></textarea>
-      <button class="btn" onclick="loadSoal()">🔄 Load Soal Saat Ini</button>
+      <h3>Edit Soal + Set Timer Per Soal</h3>
+      <p class="info">Format: Soal|PilihanA|PilihanB|PilihanC|kunci a/b/c|detik<br>Contoh: Ibu kota?|Jakarta|Bandung|Surabaya|a|10</p>
+      <textarea id="soalTextarea"></textarea>
+      <button class="btn" onclick="loadSoal()">🔄 Load Soal</button>
       <button class="btn" onclick="simpanSoal()">💾 Simpan ke GitHub</button>
       <div id="soalAlert"></div>
     </div>
 
-    <!-- TAB SETTING -->
+    <div id="tab-tema" class="tabContent">
+      <h3>🎨 Ganti Warna Tema Kuis</h3>
+      <p class="info">Pilih warna, lalu klik Simpan. Peserta harus refresh kuis buat lihat warna baru</p>
+      <input type="color" id="colorPicker" value="#e76f51">
+      <button class="btn" onclick="simpanTema()">Simpan Tema</button>
+      <p id="temaAlert"></p>
+    </div>
+
     <div id="tab-setting" class="tabContent">
       <h3>Setting Admin</h3>
       <label>Ganti Password Admin</label>
       <input type="text" id="newPass" placeholder="Password baru" style="width:100%;padding:10px;margin:10px 0;border:2px solid #ddd;border-radius:8px">
       <button class="btn" onclick="gantiPassword()">Ganti Password</button>
-      <p class="info">Password disimpan di browser. Catat baik2 ya!</p>
     </div>
   </div>
 </div>
 
 <script>
-// ===== SETTING AKUN KAMU =====
 const USERNAME = 'Hans23g';
 const REPO = 'kuis-toko-hana';
 const DATA_URL = `https://raw.githubusercontent.com/${USERNAME}/${REPO}/main/data_peserta.json?t=${Date.now()}`;
 const SOAL_URL = `https://raw.githubusercontent.com/${USERNAME}/${REPO}/main/soal.txt?t=${Date.now()}`;
 const GITHUB_API = `https://api.github.com/repos/${USERNAME}/${REPO}/contents/`;
-// ============================
 
 let PASSWORD = localStorage.getItem('adminPass') || 'adminhana123';
-let GITHUB_TOKEN = ''; // Isi token kamu di bawah kalau mau edit soal
+let GITHUB_TOKEN = '';
 
 function login(){
   const input = document.getElementById('passInput').value;
@@ -103,15 +105,14 @@ function login(){
     document.getElementById('adminBox').classList.remove('hidden');
     loadData();
     loadSoal();
-  } else {
-    alert('Password salah!');
-  }
+    document.getElementById('colorPicker').value = localStorage.getItem('temaWarna') || '#e76f51';
+  } else alert('Password salah!');
 }
 
-function switchTab(tab){
+function switchTab(tab,e){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.tabContent').forEach(t=>t.classList.remove('active'));
-  event.target.classList.add('active');
+  e.target.classList.add('active');
   document.getElementById('tab-'+tab).classList.add('active');
 }
 
@@ -124,112 +125,67 @@ async function loadData(){
       tbody.innerHTML = '<tr><td colspan="5" style="text-align:center">Belum ada peserta</td></tr>';
       return;
     }
-    tbody.innerHTML = data.map((p,i)=>`
-      <tr>
-        <td>${i+1}</td>
-        <td>${p.nama}</td>
-        <td>${p.benar}/10</td>
-        <td><b>${p.skor}</b></td>
-        <td>${p.jam}</td>
-      </tr>
-    `).join('');
+    tbody.innerHTML = data.map((p,i)=>`<tr><td>${i+1}</td><td>${p.nama}</td><td>${p.benar}/${soalList?.length||20}</td><td><b>${p.skor}</b></td><td>${p.jam}</td></tr>`).join('');
     showAlert('Data berhasil dimuat', 'success');
-  }catch(e){
-    showAlert('Gagal load data. Cek USERNAME/REPO', 'error');
-  }
+  }catch(e){showAlert('Gagal load data', 'error')}
 }
 
 async function loadSoal(){
   try{
     const res = await fetch(SOAL_URL);
-    const txt = await res.text();
-    document.getElementById('soalTextarea').value = txt;
-  }catch(e){
-    showSoalAlert('Gagal load soal.txt', 'error');
-  }
+    document.getElementById('soalTextarea').value = await res.text();
+  }catch(e){showSoalAlert('Gagal load soal.txt', 'error')}
 }
 
 async function simpanSoal(){
   if(!GITHUB_TOKEN){
-    const token = prompt('Masukkan GITHUB_TOKEN kamu untuk edit soal:\nToken harus centang repo');
-    if(!token) return alert('Token wajib diisi');
-    GITHUB_TOKEN = token;
+    GITHUB_TOKEN = prompt('Masukkan GITHUB_TOKEN kamu:');
+    if(!GITHUB_TOKEN) return;
   }
-
   const content = document.getElementById('soalTextarea').value;
-  showSoalAlert('Menyimpan ke GitHub...', 'success');
-
+  showSoalAlert('Menyimpan...', 'success');
   try{
-    // Ambil SHA file lama
-    const getRes = await fetch(GITHUB_API + 'soal.txt', {
-      headers: {'Authorization': 'token ' + GITHUB_TOKEN}
-    });
+    const getRes = await fetch(GITHUB_API + 'soal.txt', {headers: {'Authorization': 'token ' + GITHUB_TOKEN}});
     const fileData = await getRes.json();
-
-    // Upload file baru
     const uploadRes = await fetch(GITHUB_API + 'soal.txt', {
       method: 'PUT',
-      headers: {
-        'Authorization': 'token ' + GITHUB_TOKEN,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        message: 'Update soal via Admin Panel',
-        content: btoa(unescape(encodeURIComponent(content))),
-        sha: fileData.sha
-      })
+      headers: {'Authorization': 'token ' + GITHUB_TOKEN, 'Content-Type': 'application/json'},
+      body: JSON.stringify({message: 'Update soal via Admin Pro', content: btoa(unescape(encodeURIComponent(content))), sha: fileData.sha})
     });
+    if(uploadRes.ok) showSoalAlert('✅ Soal berhasil diupdate!', 'success');
+    else throw new Error('Gagal upload');
+  }catch(e){showSoalAlert('❌ Gagal: ' + e.message, 'error')}
+}
 
-    if(uploadRes.ok){
-      showSoalAlert('✅ Soal berhasil diupdate! Refresh kuis 30 detik buat lihat perubahan', 'success');
-    } else {
-      throw new Error(await uploadRes.text());
-    }
-  }catch(e){
-    showSoalAlert('❌ Gagal: ' + e.message, 'error');
-  }
+function simpanTema(){
+  const warna = document.getElementById('colorPicker').value;
+  localStorage.setItem('temaWarna', warna);
+  document.getElementById('temaAlert').innerHTML = '<div class="alert alert-success">Tema disimpan! Kasih tau peserta buat refresh kuis</div>';
+  setTimeout(()=>document.getElementById('temaAlert').innerHTML='', 3000);
 }
 
 function exportCSV(){
   fetch(DATA_URL).then(r=>r.json()).then(data=>{
     let csv = 'No,Nama,Benar,Skor,Jam\n';
-    data.forEach((p,i)=>{
-      csv += `${i+1},"${p.nama}",${p.benar},${p.skor},"${p.jam}"\n`;
-    });
-    const blob = new Blob([csv], {type:'text/csv'});
-    const url = URL.createObjectURL(blob);
+    data.forEach((p,i)=>{csv += `${i+1},"${p.nama}",${p.benar},${p.skor},"${p.jam}"\n`});
     const a = document.createElement('a');
-    a.href = url;
-    a.download = 'hasil_kuis_toko_hana.csv';
-    a.click();
+    a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+    a.download = 'hasil_kuis.csv'; a.click();
   });
 }
 
 function gantiPassword(){
   const newPass = document.getElementById('newPass').value;
-  if(newPass.length < 4) return alert('Password minimal 4 karakter');
+  if(newPass.length < 4) return alert('Minimal 4 karakter');
   PASSWORD = newPass;
   localStorage.setItem('adminPass', newPass);
-  alert('Password berhasil diganti!');
+  alert('Password diganti!');
   document.getElementById('newPass').value = '';
 }
 
-function showAlert(msg,type){
-  const box = document.getElementById('alertBox');
-  box.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
-  setTimeout(()=>box.innerHTML='', 3000);
-}
-
-function showSoalAlert(msg,type){
-  const box = document.getElementById('soalAlert');
-  box.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
-  setTimeout(()=>box.innerHTML='', 4000);
-}
-
-// Enter untuk login
-document.getElementById('passInput').addEventListener('keypress', e=>{
-  if(e.key === 'Enter') login();
-});
+function showAlert(msg,type){document.getElementById('alertBox').innerHTML = `<div class="alert alert-${type}">${msg}</div>`;setTimeout(()=>document.getElementById('alertBox').innerHTML='',3000)}
+function showSoalAlert(msg,type){document.getElementById('soalAlert').innerHTML = `<div class="alert alert-${type}">${msg}</div>`;setTimeout(()=>document.getElementById('soalAlert').innerHTML='',4000)}
+document.getElementById('passInput').addEventListener('keypress', e=>{if(e.key === 'Enter') login()});
 </script>
 </body>
 </html>
