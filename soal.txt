@@ -1,5 +1,5 @@
 Ibu kota Indonesia adalah?|Jakarta|Bandung|Surabaya|a|10
-Warna bendera Indonesia?|Merah Putih|Merah Kuning|Putih Biru|a
+Warna bendera Indonesia?|Merah Putih|Merah Kuning|Putih Biru|a|20
 2 + 3 x 4 = ?|14|20|10|a|10
 Hewan yang bisa terbang?|Kucing|Burung|Ikan|b|10
 Planet terdekat dari matahari?|Venus|Merkurius|Bumi|b|10
