@@ -30,9 +30,8 @@ h1{color:var(--warna);text-align:center;margin-bottom:25px;font-size:26px}
 
 .soal{font-size:19px;font-weight:700;margin-bottom:25px;line-height:1.6;color:#333;min-height:60px}
 
-.pilihan button{width:100%;padding:16px;margin-bottom:12px;border:3px solid #e0e0e0;background:#fff;border-radius:12px;font-size:16px;cursor:pointer;text-align:left;font-weight:600;transition:all 0.3s;position:relative;overflow:hidden}
+.pilihan button{width:100%;padding:16px;margin-bottom:12px;border:3px solid #e0e0e0;background:#fff;border-radius:12px;font-size:16px;cursor:pointer;text-align:left;font-weight:600;transition:all 0.3s}
 .pilihan button:hover{border-color:var(--warna);background:#fff5f3;transform:translateX(5px)}
-.pilihan button.terpilih{border-color:var(--warna);background:var(--warna);color:#fff}
 .pilihan button.benar{border-color:var(--benar)!important;background:var(--benar)!important;color:#fff;animation:benarAnim 0.6s}
 .pilihan button.salah{border-color:var(--salah)!important;background:var(--salah)!important;color:#fff;animation:salahAnim 0.6s}
 @keyframes benarAnim{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
@@ -56,13 +55,10 @@ h1{color:var(--warna);text-align:center;margin-bottom:25px;font-size:26px}
   border-radius:15px;
   margin:25px 0;
   text-align:center;
-  position:relative;
-  z-index:10;
-  box-shadow:0 8px 25px rgba(102,126,234,0.4);
-  animation:fadeInUp 1s 0.5s both;
+  animation:fadeInUp 1s 0.3s both;
 }
 .motivasiBox h3{font-size:22px;margin-bottom:12px}
-.motivasiBox p{font-size:15px;line-height:1.7;opacity:0.95;min-height:50px}
+.motivasiBox p{font-size:15px;line-height:1.7;opacity:0.95}
 
 .hidden{display:none}
 
@@ -246,26 +242,21 @@ async function selesaiKuis(){
   clearInterval(timerInterval);
   kuisBox.style.display = 'none';
   hasilBox.classList.remove('hidden');
+
   let benar = 0;
   soalList.forEach((s,i)=>{
     if(jawabanUser[i] === s.benar) benar++;
   });
+
   const skor = benar * 10;
   const persen = (skor / 100) * 360;
+
   skorText.textContent = skor;
   scoreCircle.style.setProperty('--deg', persen + 'deg');
 
-  // Kata motivasi + animasi ngetik
+  // Kata motivasi langsung tampil - NO RIBET
   const motivasi = kataMotivasi.find(m => skor >= m.min && skor <= m.max) || kataMotivasi[0];
-  motivasiBox.innerHTML = `<h3>${motivasi.judul}</h3><p id="teksMotivasi"></p>`;
-  let i = 0;
-  const teks = motivasi.pesan;
-  const el = document.getElementById('teksMotivasi');
-  const ketik = setInterval(()=>{
-    el.textContent += teks[i];
-    i++;
-    if(i >= teks.length) clearInterval(ketik);
-  }, 30);
+  motivasiBox.innerHTML = `<h3>${motivasi.judul}</h3><p>${motivasi.pesan}</p>`;
 
   if(skor >= 80) buatKonfeti();
 
