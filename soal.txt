@@ -1,20 +1,20 @@
-Ibu kota Indonesia adalah?|Jakarta|Bandung|Surabaya|a
+Ibu kota Indonesia adalah?|Jakarta|Bandung|Surabaya|a|10
 Warna bendera Indonesia?|Merah Putih|Merah Kuning|Putih Biru|a
-2 + 3 x 4 = ?|14|20|10|a
-Hewan yang bisa terbang?|Kucing|Burung|Ikan|b
-Planet terdekat dari matahari?|Venus|Merkurius|Bumi|b
-Bahasa resmi Indonesia?|Inggris|Indonesia|Jawa|b
-5 x 5 - 5 = ?|20|25|30|a
-Bulan ke-12 dalam setahun?|November|Desember|Oktober|b
-Warna daun pada umumnya?|Merah|Hijau|Kuning|b
-1 tahun = ... bulan?|10|12|13|b
-Hewan berkaki 4 yang suka menggonggong?|Kucing|Anjing|Ayam|b
-Ibukota Jawa Barat?|Bandung|Bekasi|Bogor|a
-Huruf setelah huruf C?|D|E|F|a
-10 - 3 + 2 = ?|7|9|8|b
-Benda yang bisa buat kita lihat?|Kacamata|Payung|Sendok|a
-Hari setelah Senin?|Selasa|Rabu|Kamis|a
-Angka ganjil di bawah ini?|4|6|7|c
-Warna langit saat cerah?|Biru|Merah|Hijau|a
-Bentuk roda itu?|Kotak|Bulat|Segitiga|b
-Air laut rasanya?|Manis|Asin|Tawar|b
+2 + 3 x 4 = ?|14|20|10|a|10
+Hewan yang bisa terbang?|Kucing|Burung|Ikan|b|10
+Planet terdekat dari matahari?|Venus|Merkurius|Bumi|b|10
+Bahasa resmi Indonesia?|Inggris|Indonesia|Jawa|b|10
+5 x 5 - 5 = ?|20|25|30|a|15
+Bulan ke-12 dalam setahun?|November|Desember|Oktober|b|10
+Warna daun pada umumnya?|Merah|Hijau|Kuning|b|10
+1 tahun = ... bulan?|10|12|13|b|15
+Hewan berkaki 4 yang suka menggonggong?|Kucing|Anjing|Ayam|b|10
+Ibukota Jawa Barat?|Bandung|Bekasi|Bogor|a|10
+Huruf setelah huruf C?|D|E|F|a|5
+10 - 3 + 2 = ?|7|9|8|b|20
+Benda yang bisa buat kita lihat?|Kacamata|Payung|Sendok|a|15
+Hari setelah Senin?|Selasa|Rabu|Kamis|a|10
+Angka ganjil di bawah ini?|4|6|7|c|5
+Warna langit saat cerah?|Biru|Merah|Hijau|a|10
+Bentuk roda itu?|Kotak|Bulat|Segitiga|b|10
+Air laut rasanya?|Manis|Asin|Tawar|b|5
