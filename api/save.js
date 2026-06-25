@@ -1,1 +1,92 @@
-export default async function handler(req,res){const TOKEN=process.env.GITHUB_TOKEN;const REPO=process.env.GITHUB_REPO;const FILE='data_peserta.json';if(!TOKEN||!REPO)return res.status(500).json({error:'Token/Repo belum diset'});const headers={Authorization:`token ${TOKEN}`,'User-Agent':'Kuis','Content-Type':'application/json'};if(req.method==='GET'&&req.query.cek){const nama=req.query.cek.toLowerCase().trim();const hariIni=new Date().toISOString().split('T')[0];const fileRes=await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`,{headers});if(fileRes.status===404)return res.json({sudah_ikut:false});const fileData=await fileRes.json();const content=JSON.parse(Buffer.from(fileData.content,'base64').toString());const sudah=content.find(p=>p.nama.toLowerCase().trim()===nama&&p.tanggal===hariIni);return res.json({sudah_ikut:!!sudah,jam:sudah?.jam})}if(req.method==='POST'){const dataBaru=req.body;const hariIni=dataBaru.timestamp.split('T')[0];const jam=new Date(dataBaru.timestamp).toLocaleTimeString('id-ID',{hour12:false});dataBaru.tanggal=hariIni;dataBaru.jam=jam;let sha=null,content=[];const fileRes=await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`,{headers});if(fileRes.ok){const fileData=await fileRes.json();sha=fileData.sha;content=JSON.parse(Buffer.from(fileData.content,'base64').toString())}if(content.find(p=>p.nama.toLowerCase().trim()===dataBaru.nama.toLowerCase().trim()&&p.tanggal===hariIni)){return res.status(400).json({error:'Sudah ikut hari ini'})}content.push(dataBaru);const newContent=Buffer.from(JSON.stringify(content,null,2)).toString('base64');const commitRes=await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`,{method:'PUT',headers,body:JSON.stringify({message:`Add: ${dataBaru.nama}`,content:newContent,sha})});if(commitRes.ok)return res.json({ok:true});return res.status(500).json({error:'Gagal commit'})}return res.status(405).json({error:'Method not allowed'})}
+export default async function handler(req, res) {
+  // Biar nggak kena CORS
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+
+  const token = process.env.GITHUB_TOKEN;
+  const repo = process.env.GITHUB_REPO; // format: Hans23g/kuis-toko-hana
+  
+  if (!token) return res.status(500).json({error:'GITHUB_TOKEN kosong di Vercel'});
+  if (!repo) return res.status(500).json({error:'GITHUB_REPO kosong di Vercel'});
+
+  const [owner, repoName] = repo.split('/');
+  const filePath = 'data_peserta.json';
+  const apiUrl = `https://api.github.com/repos/${owner}/${repoName}/contents/${filePath}`;
+  const headers = {
+    'Authorization': `token ${token}`,
+    'Accept': 'application/vnd.github.v3+json',
+    'User-Agent': 'Kuis-Toko-Hana'
+  };
+
+  // MODE CEK NAMA: ?cek=NamaPeserta
+  if (req.method === 'GET' && req.query.cek) {
+    try {
+      const r = await fetch(apiUrl, {headers});
+      if (r.status === 404) return res.json({sudah_ikut:false}); // file belum ada = aman
+      
+      const file = await r.json();
+      const content = JSON.parse(Buffer.from(file.content, 'base64').toString());
+      const nama = req.query.cek.trim().toLowerCase();
+      const ada = content.find(p => p.nama.toLowerCase() === nama);
+      
+      if (ada) return res.json({sudah_ikut:true, jam:ada.jam});
+      return res.json({sudah_ikut:false});
+    } catch (e) {
+      return res.status(500).json({error:'Gagal cek: ' + e.message});
+    }
+  }
+
+  // MODE SIMPAN: POST
+  if (req.method === 'POST') {
+    try {
+      const body = req.body;
+      if (!body.nama || !body.jawaban) return res.status(400).json({error:'Data kurang'});
+
+      let sha = null;
+      let data = [];
+      
+      // Ambil file lama kalau ada
+      const r = await fetch(apiUrl, {headers});
+      if (r.status === 200) {
+        const file = await r.json();
+        sha = file.sha;
+        data = JSON.parse(Buffer.from(file.content, 'base64').toString());
+      }
+
+      // Cek duplikat lagi
+      const nama = body.nama.trim().toLowerCase();
+      if (data.find(p => p.nama.toLowerCase() === nama)) {
+        return res.status(400).json({error:'Nama sudah dipakai'});
+      }
+
+      // Tambah data baru
+      data.push({
+        nama: body.nama.trim(),
+        jawaban: body.jawaban,
+        benar: body.benar,
+        skor: body.skor,
+        jam: new Date().toLocaleString('id-ID', {timeZone: 'Asia/Jakarta'})
+      });
+
+      // Upload ke GitHub
+      const content = Buffer.from(JSON.stringify(data, null, 2)).toString('base64');
+      const upload = await fetch(apiUrl, {
+        method: 'PUT',
+        headers,
+        body: JSON.stringify({
+          message: `Simpan hasil: ${body.nama}`,
+          content: content,
+          sha: sha
+        })
+      });
+
+      if (!upload.ok) throw new Error(await upload.text());
+      return res.json({ok:true});
+    } catch (e) {
+      return res.status(500).json({error:'Gagal simpan: ' + e.message});
+    }
+  }
+
+  return res.status(405).json({error:'Method tidak diizinkan'});
+}
