@@ -114,7 +114,7 @@ const kataMotivasi = [
   {min:80, max:100, judul:"LEGENDARY! KAMU JUARA! 🏆👑", pesan:"GOKIL! Skor segini bukan kebetulan. Ini hasil otak encer + usaha keras kamu. Bangga banget!"}
 ];
 
-// SOAL DEFAULT 20 BUAH - biar nggak error kalau soal.txt gagal
+// SOAL DEFAULT kalau soal.txt admin gagal
 const SOAL_DEFAULT = [
   {soal:"Ibukota Indonesia?", a:"Bandung", b:"Jakarta", c:"Surabaya", benar:"b", waktu:30},
   {soal:"2 + 2 x 2 =?", a:"6", b:"8", c:"4", benar:"a", waktu:30},
@@ -152,8 +152,27 @@ async function mulaiKuis(){
   inputBox.classList.add('hidden');
   kuisBox.style.display = 'block';
 
-  // Pake soal default aja biar aman, nggak fetch2 lagi
-  soalList = SOAL_DEFAULT;
+  // AUTO AMBIL soal.txt PUNYA ADMIN
+  try{
+    const res = await fetch('soal.txt?v=' + Date.now());
+    if(!res.ok) throw new Error('File nggak ketemu');
+    const txt = await res.text();
+    const lines = txt.trim().split('\n');
+    soalList = lines.map(line=>{
+      const parts = line.split('|');
+      return {
+        soal: parts[0],
+        a: parts[1],
+        b: parts[2],
+        c: parts[3],
+        benar: parts[4].trim().toLowerCase(),
+        waktu: parseInt(parts[5]) || 30
+      };
+    });
+  }catch(e){
+    soalList = SOAL_DEFAULT; // fallback
+  }
+
   jawabanUser = new Array(soalList.length).fill('');
   tampilSoal();
 }
@@ -207,8 +226,6 @@ function nextSoal(){
 
 function selesaiKuis(){
   clearInterval(timerInterval);
-
-  // PAKSA MUNCULIN HASIL DULU, baru hitung skor
   kuisBox.style.display = 'none';
   hasilBox.style.display = 'block';
 
@@ -223,17 +240,19 @@ function selesaiKuis(){
   skorText.textContent = skor;
   scoreCircle.style.setProperty('--deg', persen + 'deg');
 
-  // Kata motivasi langsung set
   const motivasi = kataMotivasi.find(m => skor >= m.min && skor <= m.max) || kataMotivasi[0];
   motivasiBox.innerHTML = `<h3>${motivasi.judul}</h3><p>${motivasi.pesan}</p>`;
 
-  // Save data - kalau error yaudah, nggak ngaruh ke tampilan
   fetch(API_URL, {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify({nama: namaPeserta, jawaban: JSON.stringify(jawabanUser), benar, skor})
-  }).catch(e => console.log('Save gagal, tapi hasil tetep muncul'));
+  }).catch(e => {});
 }
+
+document.getElementById('namaInput').addEventListener('keypress', e=>{
+  if(e.key === 'Enter') cekNama();
+});
 </script>
 </body>
 </html>
