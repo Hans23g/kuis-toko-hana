@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aplikasi Stok Toko Hana</title>
+  <style>
+    /* CATATAN CSS: Ini bagian dandanin tampilan. Kayak cat tembok toko */
+    body { font-family: Arial, sans-serif; background: #f4f4f4; margin: 0; padding: 20px; transition: 0.3s; }
+    body.dark { background: #222; color: #eee; } /* Mode gelap nyala kalo body ada class="dark" */
+
+   .container { max-width: 600px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
+    body.dark.container { background: #333; } /* Kalo mode gelap, kotaknya jadi abu tua */
+
+    button { padding: 10px 15px; margin: 5px; border: none; border-radius: 5px; cursor: pointer; }
+   .benar { background: #4CAF50!important; color: white; animation: pop 0.3s; } /* Kalo jawaban benar, jadi hijau + animasi pop */
+   .salah { background: #f44336!important; color: white; animation: shake 0.3s; } /* Kalo salah, jadi merah + goyang */
+
+    @keyframes pop { 0%{transform:scale(1);} 50%{transform:scale(1.1);} 100%{transform:scale(1);} } /* Animasi membesar */
+    @keyframes shake { 0%,100%{transform:translateX(0);} 25%{transform:translateX(-5px);} 75%{transform:translateX(5px);} } /* Animasi goyang */
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Aplikasi Stok Toko Hana</h1> <!-- JUDUL BARU KAMU -->
+    <button onclick="gantiTema()">Ganti Tema 🌙</button> <!-- TOMBOL BUAT PANGGIL FUNGSI -->
+
+    <div id="soalBox">
+      <h2 id="pertanyaan">Loading soal...</h2>
+      <div id="pilihan"></div> <!-- Tombol pilihan jawaban akan muncul di sini -->
+      <p>Skor: <span id="skor">0</span></p>
+    </div>
+  </div>
+
+  <script>
+    /* CATATAN JS: Ini bagian otaknya. Kayak kasir yang ngitung */
+
+    // DATA: Isi soal kuis. Gampang ditambahin nanti
+    const dataSoal = [
+      { tanya: "Modal awal 1 juta, beli barang 600rb. Sisa kas?", pilih: ["400rb", "600rb", "1jt"], benar: 0 },
+      { tanya: "Barang modal 10rb dijual 15rb. Untungnya?", pilih: ["3rb", "5rb", "15rb"], benar: 1 }
+    ];
+
+    let nomorSoal = 0; // Lacak kita di soal nomor berapa
+    let skor = 0; // Lacak skor
+
+    // FUNGSI 1: Tugasnya nampilin soal ke layar
+    function muatSoal() {
+      const soal = dataSoal[nomorSoal]; // Ambil soal sesuai nomor
+      document.getElementById('pertanyaan').innerText = soal.tanya; // Tempel teks soal ke h2
+
+      const divPilihan = document.getElementById('pilihan');
+      divPilihan.innerHTML = ''; // Kosongin tombol lama dulu
+
+      // Bikin tombol buat tiap pilihan jawaban
+      soal.pilih.forEach((teks, i) => {
+        const btn = document.createElement('button');
+        btn.innerText = teks;
+        btn.onclick = () => pilihJawaban(i, btn); // Kalo diklik, panggil fungsi pilihJawaban
+        divPilihan.appendChild(btn);
+      });
+    }
+
+    // FUNGSI 2: Tugasnya ngecek jawaban bener apa salah + kasih animasi
+    function pilihJawaban(indexYangDiklik, tombolYangDiklik) {
+      const soal = dataSoal[nomorSoal];
+
+      // Nonaktifin semua tombol biar nggak bisa klik 2x
+      document.querySelectorAll('#pilihan button').forEach(b => b.disabled = true);
+
+      if (indexYangDiklik === soal.benar) {
+        tombolYangDiklik.classList.add('benar'); // Kasih warna hijau + animasi pop
+        skor++;
+      } else {
+        tombolYangDiklik.classList.add('salah'); // Kasih warna merah + animasi shake
+        // Sorot juga jawaban yang benernya
+        document.querySelectorAll('#pilihan button')[soal.benar].classList.add('benar');
+      }
+
+      document.getElementById('skor').innerText = skor; // Update angka skor di layar
+
+      // Jeda 1.5 detik, baru pindah soal berikutnya
+      setTimeout(() => {
+        nomorSoal++;
+        if (nomorSoal < dataSoal.length) {
+          muatSoal(); // Panggil ulang fungsi muatSoal
+        } else {
+          alert('Selesai! Skor akhir: ' + skor); // Kalo udah habis soalnya
+        }
+      }, 1500);
+    }
+
+    // FUNGSI 3: Tugasnya ganti mode terang/gelap
+    function gantiTema() {
+      document.body.classList.toggle('dark'); // Nambahin/hapus class="dark" di tag <body>
+    }
+
+    // INI PERINTAH PERTAMA KALI HALAMAN DIBUKA
+    muatSoal(); // Langsung panggil fungsi muatSoal biar nggak kosong
+  </script>
+</body>
+</html>
